@@ -4,7 +4,7 @@ trigger:
 
 variables:
   appName: "AgentGaurd"
-  azureSubscription: "c7e872cb-4329-4918-94eb-fd1d1bdd1107"
+  azureSubscription: "01a14933-3791-4669-babd-38b73f6e3f49"
   containerRegistry: "reciperegistry.azurecr.io"
   imageRepository: "AgentGaurd"
   dockerRegistryServiceConnection: "recipeRegistry-connection"
