@@ -6,7 +6,7 @@ variables:
   appName: "AgentGaurd"
   azureSubscription: "azure-rm-sc"
   containerRegistry: "reciperegistry.azurecr.io"
-  imageRepository: "AgentGaurd"
+  imageRepository: "agentgaurd"
   dockerRegistryServiceConnection: "recipeRegistry-connection"
   tag: "$(Build.BuildId)"
 
