@@ -19,7 +19,7 @@ steps:
     inputs:
       command: build
       repository: $(imageRepository)
-      dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+      dockerfile: '$(Build.SourcesDirectory)/.devcontainer/Dockerfile'
       containerRegistry: $(dockerRegistryServiceConnection)
       tags: |
         $(tag)
