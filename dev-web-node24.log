@@ -1,0 +1,61 @@
+npm warn Unknown project config "public-hoist-pattern". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> langfuse@3.167.4 dev:web C:\Users\SYS-02\Downloads\langfuse-main\langfuse-main
+> turbo run dev --filter=web
+
+• turbo 2.9.5
+
+   • Packages in scope: web
+   • Running dev in 1 packages
+   • Remote caching disabled
+
+@langfuse/shared:db:generate: cache hit, replaying logs 8916346eb56e5e03
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: > @langfuse/shared@1.0.0 db:generate C:\Users\SYS-02\Downloads\langfuse-main\langfuse-main\packages\shared
+@langfuse/shared:db:generate: > dotenv -e ../../.env -- npx prisma generate
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+@langfuse/shared:db:generate: For more information, see: https://pris.ly/prisma-config
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: Prisma schema loaded from prisma\schema.prisma
+@langfuse/shared:db:generate: warn Preview feature "metrics" is deprecated. It will be removed in a future version of Prisma.
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: ✔ Generated Prisma Client (v6.19.3) to .\..\..\node_modules\.pnpm\@prisma+client@6.19.3_prism_f3b4a18754b49c77343e65ef48c7e326\node_modules\@prisma\client in 1.79s
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+@langfuse/shared:db:generate: 
+web:dev: cache bypass, force executing 41967c1e818de096
+web:dev: 
+web:dev: > web@3.167.4 dev C:\Users\SYS-02\Downloads\langfuse-main\langfuse-main\web
+web:dev: > dotenv -e ../.env -- next dev
+web:dev: 
+web:dev: ▲ Next.js 16.2.3 (Turbopack)
+web:dev: - Local:         http://localhost:3001
+web:dev: - Network:       http://10.181.246.128:3001
+web:dev: ✓ Ready in 6.9s
+web:dev: [@sentry/nextjs] DEPRECATION WARNING: disableLogger is deprecated and will be removed in a future version. Use webpack.treeshake.removeDebugLogging instead. (Not supported with Turbopack.)
+web:dev: [@sentry/nextjs] DEPRECATION WARNING: automaticVercelMonitors is deprecated and will be removed in a future version. Use webpack.automaticVercelMonitors instead. (Not supported with Turbopack.)
+web:dev: [@sentry/nextjs] DEPRECATION WARNING: reactComponentAnnotation is deprecated and will be removed in a future version. Use webpack.reactComponentAnnotation instead. (Not supported with Turbopack.)
+web:dev: ⚠ i18n configuration in next.config.mjs is unsupported in App Router.
+web:dev: Learn more about internationalization in App Router: https://nextjs.org/docs/app/building-your-application/routing/internationalization
+web:dev: Creating turbopack project {
+web:dev:   dir: 'C:\\Users\\SYS-02\\Downloads\\langfuse-main\\langfuse-main\\web',
+web:dev:   testMode: true
+web:dev: }
+web:dev: - Experiments (use with caution):
+web:dev:   · clientTraceMetadata
+web:dev:   ✓ turbopackFileSystemCacheForBuild
+web:dev: 
+web:dev: [?25h
+web:dev:  ELIFECYCLE  Command failed with exit code 4294967295.
+ ERROR  web#dev: command (C:\Users\SYS-02\Downloads\langfuse-main\langfuse-main\web) C:\Users\SYS-02\AppData\Local\pnpm\.tools\pnpm\10.33.0\bin\pnpm.CMD run dev exited (-1)
+
+ Tasks:    1 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    6m59.7s 
+Failed:    web#dev
+
+ ERROR  run failed: command  exited (-1)
+ ELIFECYCLE  Command failed with exit code 4294967295.
