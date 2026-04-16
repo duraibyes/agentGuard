@@ -1,29 +1,43 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
-- main
-
-resources:
-- repo: self
+  - main
+  - main-post
 
 variables:
-  tag: '$(Build.BuildId)'
+  appName: "AgentGaurd"
+  azureSubscription: "c7e872cb-4329-4918-94eb-fd1d1bdd1107"
+  containerRegistry: "reciperegistry.azurecr.io"
+  imageRepository: "AgentGaurd"
+  dockerRegistryServiceConnection: "recipeRegistry-connection"
+  tag: "$(Build.BuildId)"
 
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/.devcontainer/Dockerfile'
-        tags: |
-          $(tag)
+pool:
+  vmImage: "ubuntu-latest"
+
+steps:
+  - task: Docker@2
+    displayName: "Build Docker image"
+    inputs:
+      command: build
+      repository: $(imageRepository)
+      dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+      containerRegistry: $(dockerRegistryServiceConnection)
+      tags: |
+        $(tag)
+        latest
+
+  - task: Docker@2
+    displayName: "Push Docker image to ACR"
+    inputs:
+      command: push
+      repository: $(imageRepository)
+      containerRegistry: $(dockerRegistryServiceConnection)
+      tags: |
+        $(tag)
+        latest
+
+  - task: AzureWebAppContainer@1
+    displayName: "Deploy container to App Service"
+    inputs:
+      azureSubscription: $(azureSubscription)
+      appName: $(appName)
+      containers: $(containerRegistry)/$(imageRepository):$(tag)
