@@ -8,10 +8,13 @@ RUN npm install -g pnpm
 # Copy dependency files
 COPY package.json pnpm-lock.yaml* ./
 
+# IMPORTANT: copy patches required by pnpm
+COPY patches ./patches
+
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copy source
+# Copy remaining source code
 COPY . .
 
 ENV PORT=3000
