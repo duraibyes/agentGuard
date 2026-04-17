@@ -1,16 +1,19 @@
-# Use lightweight Node image
-FROM node:20-alpine
+# Use Node 24 as required
+FROM node:24-alpine
 
-# Create app directory
+# Set working directory
 WORKDIR /app
 
-# Copy package files first (better caching)
-COPY package*.json ./
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Copy dependency files first (for caching)
+COPY package.json pnpm-lock.yaml* ./
 
 # Install dependencies
-RUN npm install
+RUN pnpm install --frozen-lockfile
 
-# Copy the rest of the application source
+# Copy application source
 COPY . .
 
 # Azure App Service uses PORT env variable
@@ -19,5 +22,5 @@ ENV PORT=8080
 # Expose the port
 EXPOSE 8080
 
-# Start the application
-CMD ["npm", "start"]
+# Start application
+CMD ["pnpm", "start"]
