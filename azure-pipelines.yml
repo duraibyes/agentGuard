@@ -20,7 +20,7 @@ steps:
       command: build
       repository: $(imageRepository)
       buildContext: $(Build.SourcesDirectory)
-      dockerfile: '$(Build.SourcesDirectory)/.container/Dockerfile'
+      dockerfile: '$(Build.SourcesDirectory)/web/Dockerfile'
       containerRegistry: $(dockerRegistryServiceConnection)
       tags: |
         $(tag)
