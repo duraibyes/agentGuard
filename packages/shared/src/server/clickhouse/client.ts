@@ -13,19 +13,6 @@ export type PreferredClickhouseService =
   | "ReadOnly"
   | "EventsReadOnly";
 
-export const isClickhouseConfigured = (): boolean =>
-  Boolean(
-    env.CLICKHOUSE_URL && env.CLICKHOUSE_USER && env.CLICKHOUSE_PASSWORD,
-  );
-
-const assertClickhouseConfigured = (): void => {
-  if (!isClickhouseConfigured()) {
-    throw new Error(
-      "ClickHouse is not configured. Set CLICKHOUSE_URL, CLICKHOUSE_USER, and CLICKHOUSE_PASSWORD to enable ClickHouse-backed features.",
-    );
-  }
-};
-
 /**
  * ClickHouseClientManager provides a singleton pattern for managing ClickHouse clients.
  * It creates and reuses clients based on their configuration to avoid creating
@@ -108,7 +95,6 @@ export class ClickHouseClientManager {
     opts: NodeClickHouseClientConfigOptions,
     preferredClickhouseService: PreferredClickhouseService = "ReadWrite",
   ): ClickhouseClientType {
-    assertClickhouseConfigured();
     const settings = this.generateClientSettings(
       opts,
       preferredClickhouseService,

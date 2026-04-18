@@ -2,7 +2,6 @@ import { env } from "../../env";
 import {
   clickhouseClient,
   convertDateToClickhouseDateTime,
-  isClickhouseConfigured,
   PreferredClickhouseService,
 } from "../clickhouse/client";
 import { logger } from "../logger";
@@ -125,13 +124,6 @@ export async function upsertClickhouse<
   eventBodyMapper: (body: T) => Record<string, unknown>;
   tags?: Record<string, string>;
 }): Promise<void> {
-  if (!isClickhouseConfigured()) {
-    logger.warn(
-      "Skipping ClickHouse upsert because ClickHouse is not configured.",
-    );
-    return;
-  }
-
   return await instrumentAsync(
     { name: "clickhouse-upsert", spanKind: SpanKind.CLIENT },
     async (span) => {
