@@ -15,7 +15,7 @@ pool:
 
 steps:
   - task: Docker@2
-    displayName: "Build Docker image"
+    displayName: "Build Web Docker image"
     inputs:
       command: build
       repository: $(imageRepository)
@@ -27,7 +27,7 @@ steps:
         latest
 
   - task: Docker@2
-    displayName: "Push Docker image to ACR"
+    displayName: "Push Web Docker image to ACR"
     inputs:
       command: push
       repository: $(imageRepository)
@@ -36,9 +36,42 @@ steps:
         $(tag)
         latest
 
+  # Deploy Web to App Service
   - task: AzureWebAppContainer@1
-    displayName: "Deploy container to App Service"
+    displayName: "Deploy Web container to App Service"
     inputs:
       azureSubscription: $(azureSubscription)
       appName: $(appName)
       containers: $(containerRegistry)/$(imageRepository):$(tag)
+
+  # Build Worker image
+  - task: Docker@2
+    displayName: "Build Worker Docker image"
+    inputs:
+      command: build
+      repository: "agentgaurd-worker"
+      buildContext: $(Build.SourcesDirectory)
+      dockerfile: '$(Build.SourcesDirectory)/worker/Dockerfile'
+      containerRegistry: $(dockerRegistryServiceConnection)
+      tags: |
+        $(tag)
+        latest
+
+  # Push Worker image
+  - task: Docker@2
+    displayName: "Push Worker Docker image to ACR"
+    inputs:
+      command: push
+      repository: "agentgaurd-worker"
+      containerRegistry: $(dockerRegistryServiceConnection)
+      tags: |
+        $(tag)
+        latest
+
+  # Deploy Worker to App Service
+  - task: AzureWebAppContainer@1
+    displayName: "Deploy Worker container to App Service"
+    inputs:
+      azureSubscription: $(azureSubscription)
+      appName: "agentguard-worker"
+      containers: $(containerRegistry)/agentgaurd-worker:$(tag)
