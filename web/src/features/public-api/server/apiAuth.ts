@@ -14,9 +14,9 @@ import {
   invalidateCachedProjectApiKeys as invalidateCachedProjectApiKeysShared,
 } from "@langfuse/shared/src/server";
 import {
+  Prisma,
   type PrismaClient,
   type ApiKey,
-  type Prisma,
   type ApiKeyScope,
 } from "@langfuse/shared/src/db";
 import { isPrismaException } from "@/src/utils/exceptions";
@@ -59,8 +59,9 @@ export class ApiAuthService {
   async deleteApiKey(id: string, entityId: string, scope: ApiKeyScope) {
     const entity =
       scope === "PROJECT" ? { projectId: entityId } : { orgId: entityId };
-    // Make sure the API key exists and belongs to the project the user has access to
-    const apiKey = await this.prisma.apiKey.findFirstOrThrow({
+    // Make sure the API key belongs to the expected entity. Idempotent deletion:
+    // when the key is already gone, treat it as a successful no-op.
+    const apiKey = await this.prisma.apiKey.findFirst({
       where: {
         ...entity,
         id: id,
@@ -68,18 +69,34 @@ export class ApiAuthService {
       },
     });
     if (!apiKey) {
-      return false;
+      return true;
     }
 
     // if redis is available, delete the key from there as well
     // delete from redis even if caching is disabled via env for consistency
-    await this.invalidateCachedApiKeys([apiKey], `key ${id}`);
+    try {
+      await this.invalidateCachedApiKeys([apiKey], `key ${id}`);
+    } catch (error) {
+      // Cache invalidation failure should not block DB deletion.
+      logger.warn(`Failed to invalidate API key cache for key ${id}`, error);
+    }
 
-    await this.prisma.apiKey.delete({
-      where: {
-        id: apiKey.id,
-      },
-    });
+    try {
+      await this.prisma.apiKey.delete({
+        where: {
+          id: apiKey.id,
+        },
+      });
+    } catch (error) {
+      // Handle race condition where another request deleted the key first.
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2025"
+      ) {
+        return true;
+      }
+      throw error;
+    }
     return true;
   }
 

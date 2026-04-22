@@ -100,10 +100,16 @@ const checks = [
           ...(Object.keys(natMap).length > 0 ? { natMap } : {}),
           clusterRetryStrategy: () => null,
           enableOfflineQueue: false,
+          lazyConnect: true,
           redisOptions: {
             password: process.env.REDIS_AUTH || undefined,
             username: process.env.REDIS_USERNAME || undefined,
-            tls: tlsEnabled ? {} : undefined,
+            tls: tlsEnabled
+              ? {
+                  servername:
+                    process.env.REDIS_TLS_SERVERNAME || process.env.REDIS_HOST,
+                }
+              : undefined,
             connectTimeout: 10000,
             maxRetriesPerRequest: 1,
             enableOfflineQueue: false,
@@ -111,6 +117,7 @@ const checks = [
         });
 
         try {
+          await withTimeout(cluster.connect(), 15000, "Redis cluster connect");
           await withTimeout(cluster.ping(), 15000, "Redis cluster ping");
         } finally {
           cluster.disconnect();
@@ -121,13 +128,20 @@ const checks = [
           port: Number(process.env.REDIS_PORT),
           password: process.env.REDIS_AUTH || undefined,
           username: process.env.REDIS_USERNAME || undefined,
-          tls: tlsEnabled ? {} : undefined,
+          tls: tlsEnabled
+            ? {
+                servername:
+                  process.env.REDIS_TLS_SERVERNAME || process.env.REDIS_HOST,
+              }
+            : undefined,
           connectTimeout: 10000,
           maxRetriesPerRequest: 1,
           retryStrategy: () => null,
           enableOfflineQueue: false,
+          lazyConnect: true,
         });
         try {
+          await withTimeout(redis.connect(), 15000, "Redis connect");
           await withTimeout(redis.ping(), 15000, "Redis ping");
         } finally {
           redis.disconnect();
