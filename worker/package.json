@@ -25,7 +25,8 @@
     "lint:fix": "eslint . --cache --cache-location dist/.eslintcache --fix",
     "refill-ingestion-events": "dotenv -e ../.env -- tsx src/scripts/replayIngestionEvents/s3-ingestion-event-replay.ts",
     "refill-billing-event": "dotenv -e ../.env -- tsx src/scripts/refill-billing-event.ts",
-    "refill-queue-event": "dotenv -e ../.env -- tsx src/scripts/refillQueueEvent/index.ts"
+    "refill-queue-event": "dotenv -e ../.env -- tsx src/scripts/refillQueueEvent/index.ts",
+    "verify:ingest-read": "node scripts/verify-ingest-read.mjs"
   },
   "author": "engineering@langfuse.com",
   "dependencies": {

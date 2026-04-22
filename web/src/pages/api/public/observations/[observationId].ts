@@ -11,8 +11,29 @@ import {
   enrichObservationWithModelData,
   getObservationById,
   getObservationByIdFromEventsTable,
+  logger,
 } from "@langfuse/shared/src/server";
 import { env } from "@/src/env.mjs";
+
+const EVENTS_TABLE_QUERY_TIMEOUT_MS = 15000;
+
+const withTimeout = async <T,>(promise: Promise<T>, timeoutMs: number) => {
+  return await new Promise<T>((resolve, reject) => {
+    const timeoutHandle = setTimeout(() => {
+      reject(new Error(`Timed out after ${timeoutMs}ms`));
+    }, timeoutMs);
+
+    promise
+      .then((result) => {
+        clearTimeout(timeoutHandle);
+        resolve(result);
+      })
+      .catch((error) => {
+        clearTimeout(timeoutHandle);
+        reject(error);
+      });
+  });
+};
 
 export default withMiddlewares({
   GET: createAuthedProjectAPIRoute({
@@ -24,20 +45,44 @@ export default withMiddlewares({
       const useEventsTable =
         query.useEventsTable !== undefined && query.useEventsTable !== null
           ? query.useEventsTable === true
-          : env.LANGFUSE_ENABLE_EVENTS_TABLE_OBSERVATIONS;
+          : env.LANGFUSE_ENABLE_EVENTS_TABLE_OBSERVATIONS === "true";
 
-      const clickhouseObservation = useEventsTable
-        ? await getObservationByIdFromEventsTable({
-            id: query.observationId,
-            projectId: auth.scope.projectId,
-            fetchWithInputOutput: true,
-          })
-        : await getObservationById({
-            id: query.observationId,
-            projectId: auth.scope.projectId,
-            fetchWithInputOutput: true,
-            preferredClickhouseService: "ReadOnly",
-          });
+      let clickhouseObservation = null;
+
+      if (useEventsTable) {
+        try {
+          clickhouseObservation = await withTimeout(
+            getObservationByIdFromEventsTable({
+              id: query.observationId,
+              projectId: auth.scope.projectId,
+              fetchWithInputOutput: true,
+            }),
+            EVENTS_TABLE_QUERY_TIMEOUT_MS,
+          );
+        } catch (error) {
+          if (query.useEventsTable === true) {
+            throw error;
+          }
+
+          logger.warn(
+            "Events-table single observation query failed, falling back to legacy observations table",
+            {
+              projectId: auth.scope.projectId,
+              observationId: query.observationId,
+              error: error instanceof Error ? error.message : String(error),
+            },
+          );
+        }
+      }
+
+      if (!clickhouseObservation) {
+        clickhouseObservation = await getObservationById({
+          id: query.observationId,
+          projectId: auth.scope.projectId,
+          fetchWithInputOutput: true,
+          preferredClickhouseService: "ReadOnly",
+        });
+      }
 
       if (!clickhouseObservation) {
         throw new LangfuseNotFoundError(

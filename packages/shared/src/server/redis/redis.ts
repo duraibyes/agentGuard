@@ -163,14 +163,24 @@ const buildTlsOptions = (): Record<string, unknown> => {
 const createRedisClusterInstance = (
   additionalOptions: Partial<RedisOptions> = {},
 ): Cluster | null => {
-  if (!env.REDIS_CLUSTER_NODES) {
+  const nodes =
+    env.REDIS_CLUSTER_NODES && env.REDIS_CLUSTER_NODES.trim().length > 0
+      ? parseClusterNodes(env.REDIS_CLUSTER_NODES)
+      : env.REDIS_HOST && env.REDIS_PORT
+        ? [{ host: String(env.REDIS_HOST), port: Number(env.REDIS_PORT) }]
+        : null;
+
+  if (!nodes || nodes.length === 0) {
     logger.error(
-      "REDIS_CLUSTER_NODES is required when REDIS_CLUSTER_ENABLED is true",
+      "REDIS_CLUSTER_ENABLED=true but no cluster node could be resolved. Set REDIS_CLUSTER_NODES or REDIS_HOST/REDIS_PORT.",
     );
     return null;
   }
-
-  const nodes = parseClusterNodes(env.REDIS_CLUSTER_NODES);
+  if (!env.REDIS_CLUSTER_NODES && env.REDIS_HOST && env.REDIS_PORT) {
+    logger.warn(
+      "REDIS_CLUSTER_NODES is not set. Falling back to REDIS_HOST/REDIS_PORT as cluster seed node.",
+    );
+  }
   const tlsOptions = buildTlsOptions();
   const natMap = createRedisClusterNatMap();
 

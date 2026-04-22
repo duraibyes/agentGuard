@@ -100,6 +100,9 @@ app.get<{}, MessageResponse>("/", (req, res) => {
     message: "Langfuse Worker API 🚀",
   });
 });
+app.get("/health", (_req, res) => {
+  res.status(200).json({ message: "OK" });
+});
 
 app.use("/api", api);
 

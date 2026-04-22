@@ -7,12 +7,14 @@ const EnvSchema = z.object({
     .enum(["development", "test", "production"])
     .default("development"),
   DATABASE_URL: z.string(),
-  HOSTNAME: z.string().default("0.0.0.0"),
+  HOSTNAME: z
+    .string()
+    .default(process.env.WORKER_HOSTNAME || process.env.HOSTNAME || "0.0.0.0"),
   PORT: z.coerce
     .number() // ".env files convert numbers to strings, therefore we have to enforce them to be numbers"
     .positive()
     .max(65536, `options.port should be >= 0 and < 65536`)
-    .default(3030),
+    .default(Number(process.env.WORKER_PORT || process.env.PORT || 3030)),
 
   NEXTAUTH_URL: z.string().optional(),
 

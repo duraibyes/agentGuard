@@ -2,6 +2,7 @@ import { prisma } from "@langfuse/shared/src/db";
 import {
   getObservationsFromEventsTableForPublicApi,
   getObservationsCountFromEventsTableForPublicApi,
+  logger,
 } from "@langfuse/shared/src/server";
 import { env } from "@/src/env.mjs";
 
@@ -17,6 +18,26 @@ import {
   generateObservationsForPublicApi,
   getObservationsCountForPublicApi,
 } from "@/src/features/public-api/server/observations";
+
+const EVENTS_TABLE_QUERY_TIMEOUT_MS = 15000;
+
+const withTimeout = async <T,>(promise: Promise<T>, timeoutMs: number) => {
+  return await new Promise<T>((resolve, reject) => {
+    const timeoutHandle = setTimeout(() => {
+      reject(new Error(`Timed out after ${timeoutMs}ms`));
+    }, timeoutMs);
+
+    promise
+      .then((result) => {
+        clearTimeout(timeoutHandle);
+        resolve(result);
+      })
+      .catch((error) => {
+        clearTimeout(timeoutHandle);
+        reject(error);
+      });
+  });
+};
 
 export default withMiddlewares({
   GET: createAuthedProjectAPIRoute({
@@ -45,23 +66,40 @@ export default withMiddlewares({
       const useEventsTable =
         query.useEventsTable !== undefined && query.useEventsTable !== null
           ? query.useEventsTable === true
-          : env.LANGFUSE_ENABLE_EVENTS_TABLE_OBSERVATIONS;
+          : env.LANGFUSE_ENABLE_EVENTS_TABLE_OBSERVATIONS === "true";
 
       if (useEventsTable) {
-        const [items, count] = await Promise.all([
-          getObservationsFromEventsTableForPublicApi(filterProps),
-          getObservationsCountFromEventsTableForPublicApi(filterProps),
-        ]);
+        try {
+          const [items, count] = await withTimeout(
+            Promise.all([
+              getObservationsFromEventsTableForPublicApi(filterProps),
+              getObservationsCountFromEventsTableForPublicApi(filterProps),
+            ]),
+            EVENTS_TABLE_QUERY_TIMEOUT_MS,
+          );
 
-        return {
-          data: items.map(transformDbToApiObservation),
-          meta: {
-            page: query.page,
-            limit: query.limit,
-            totalItems: count,
-            totalPages: Math.ceil(count / query.limit),
-          },
-        };
+          return {
+            data: items.map(transformDbToApiObservation),
+            meta: {
+              page: query.page,
+              limit: query.limit,
+              totalItems: count,
+              totalPages: Math.ceil(count / query.limit),
+            },
+          };
+        } catch (error) {
+          if (query.useEventsTable === true) {
+            throw error;
+          }
+
+          logger.warn(
+            "Events-table observation query failed, falling back to legacy observations table",
+            {
+              projectId: auth.scope.projectId,
+              error: error instanceof Error ? error.message : String(error),
+            },
+          );
+        }
       }
 
       // Legacy code path using observations table
