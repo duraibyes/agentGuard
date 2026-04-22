@@ -90,7 +90,7 @@ export function DatasetVersionHistoryPanel({
 
   const openDocumentation = () => {
     window.open(
-      "https://langfuse.com/docs/datasets/dataset-versioning",
+      "https://agentguard.dev/docs/datasets/dataset-versioning",
       "_blank",
     );
   };
@@ -308,3 +308,4 @@ export function DatasetVersionHistoryPanel({
     </div>
   );
 }
+

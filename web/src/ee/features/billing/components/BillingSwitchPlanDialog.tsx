@@ -77,7 +77,7 @@ export const BillingSwitchPlanDialog = ({
             <DialogTitle>Plans</DialogTitle>
             <ActionButton
               variant="secondary"
-              href="https://langfuse.com/pricing"
+              href="https://agentguard.dev/pricing"
             >
               Comparison of plans ↗
             </ActionButton>
@@ -132,7 +132,7 @@ export const BillingSwitchPlanDialog = ({
                         <div className="text-muted-foreground text-sm">
                           + {product.checkout?.usagePrice},{" "}
                           <a
-                            href="https://langfuse.com/pricing#pricing-calculator"
+                            href="https://agentguard.dev/pricing#pricing-calculator"
                             target="_blank"
                             rel="noreferrer"
                             className="underline"
@@ -156,7 +156,7 @@ export const BillingSwitchPlanDialog = ({
                       </ul>
                     </div>
                     <Link
-                      href="https://langfuse.com/pricing"
+                      href="https://agentguard.dev/pricing"
                       target="_blank"
                       className="text-muted-foreground hover:text-foreground mt-auto block py-4 text-sm"
                     >
@@ -305,3 +305,4 @@ export const BillingSwitchPlanDialog = ({
     </Dialog>
   );
 };
+

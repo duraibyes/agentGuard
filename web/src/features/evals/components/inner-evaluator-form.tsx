@@ -125,7 +125,7 @@ const addPropagationWarnings = (
               This filter requires JS SDK &ge; 4.0.0 or Python SDK &ge; 3.0.0
               with attribute propagation enabled. Please{" "}
               <a
-                href="https://langfuse.com/integrations/native/opentelemetry#propagating-attributes"
+                href="https://agentguard.dev/integrations/native/opentelemetry#propagating-attributes"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-dark-blue hover:opacity-80"
@@ -933,7 +933,7 @@ export const InnerEvaluatorForm = (props: {
                             This evaluator can still be used for batched
                             evaluation of historic observations.{" "}
                             <a
-                              href="https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                              href="https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-dark-blue hover:opacity-80"
@@ -1234,3 +1234,4 @@ export const InnerEvaluatorForm = (props: {
     </>
   );
 };
+

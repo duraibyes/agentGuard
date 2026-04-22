@@ -51,7 +51,7 @@ export function LegacyEvalCallout({
       <span>This evaluator </span>
       <span className="text-dark-blue hover:opacity-80">
         <Link
-          href="https://langfuse.com/faq/all/llm-as-a-judge-migration"
+          href="https://agentguard.dev/faq/all/llm-as-a-judge-migration"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -71,3 +71,4 @@ export function LegacyEvalCallout({
     </Callout>
   );
 }
+

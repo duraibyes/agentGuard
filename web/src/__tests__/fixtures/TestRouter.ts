@@ -4,7 +4,7 @@ import { type LocationMock } from "@jedmao/location";
 
 type PartialRouter = Partial<Router>;
 
-export const BASE_URL = "https://langfuse.com";
+export const BASE_URL = "https://agentguard.dev";
 
 /**
  * A Router to be used for testing which provides the bare minimum needed
@@ -51,3 +51,4 @@ export class TestRouter implements PartialRouter {
     return new URL(`${BASE_URL}${this.currentUrl}`).searchParams;
   }
 }
+

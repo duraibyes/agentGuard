@@ -4,14 +4,14 @@ services:
     # Unit tests still verify 24.3 behaviour using -azure and -redis-cluster configs.
     image: docker.io/clickhouse/clickhouse-server:25.8
     user: "101:101"
-    container_name: ${CLICKHOUSE_CONTAINER_NAME:-langfuse-clickhouse}
+    container_name: ${CLICKHOUSE_CONTAINER_NAME:-agentguard-clickhouse}
     environment:
       CLICKHOUSE_DB: default
       CLICKHOUSE_USER: ${CLICKHOUSE_USER:-clickhouse}
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-clickhouse}
     volumes:
-      - langfuse_clickhouse_data:/var/lib/clickhouse
-      - langfuse_clickhouse_logs:/var/log/clickhouse-server
+      - agentguard_clickhouse_data:/var/lib/clickhouse
+      - agentguard_clickhouse_logs:/var/log/clickhouse-server
     ports:
       - ${HOST_IP:-127.0.0.1}:${CLICKHOUSE_HTTP_PORT:-8123}:8123
       - ${HOST_IP:-127.0.0.1}:${CLICKHOUSE_NATIVE_PORT:-9000}:9000
@@ -21,17 +21,15 @@ services:
       timeout: 5s
       retries: 10
       start_period: 1s
-    depends_on:
-      - postgres
     networks:
       - default
 
   minio:
     image: cgr.dev/chainguard/minio
-    container_name: ${MINIO_CONTAINER_NAME:-langfuse-minio}
+    container_name: ${MINIO_CONTAINER_NAME:-agentguard-minio}
     entrypoint: sh
-    # create the 'langfuse' bucket before starting the service
-    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
+    # create default local buckets before starting the service
+    command: -c 'mkdir -p /data/agentguard /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-miniosecret}
@@ -39,7 +37,7 @@ services:
       - ${HOST_IP:-127.0.0.1}:${MINIO_API_PORT:-9090}:9000
       - ${HOST_IP:-127.0.0.1}:${MINIO_CONSOLE_PORT:-9091}:9001
     volumes:
-      - langfuse_minio_data:/data
+      - agentguard_minio_data:/data
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 1s
@@ -51,7 +49,7 @@ services:
 
   redis:
     image: docker.io/redis:7.2.4
-    container_name: ${REDIS_CONTAINER_NAME:-langfuse-redis}
+    container_name: ${REDIS_CONTAINER_NAME:-agentguard-redis}
     restart: always
     command: >
       --requirepass ${REDIS_AUTH:-myredissecret}
@@ -63,7 +61,7 @@ services:
 
   postgres:
     image: docker.io/postgres:${POSTGRES_VERSION:-17}
-    container_name: ${POSTGRES_CONTAINER_NAME:-langfuse-postgres}
+    container_name: ${POSTGRES_CONTAINER_NAME:-agentguard-postgres}
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -80,25 +78,25 @@ services:
     ports:
       - ${HOST_IP:-127.0.0.1}:${POSTGRES_HOST_PORT:-5432}:5432
     volumes:
-      - langfuse_postgres_data:/var/lib/postgresql/data
+      - agentguard_postgres_data:/var/lib/postgresql/data
     networks:
       - default
 
 volumes:
-  langfuse_postgres_data:
-    name: ${POSTGRES_VOLUME_NAME:-langfuse_postgres_data}
+  agentguard_postgres_data:
+    name: ${POSTGRES_VOLUME_NAME:-agentguard_postgres_data}
     driver: local
-  langfuse_clickhouse_data:
-    name: ${CLICKHOUSE_DATA_VOLUME_NAME:-langfuse_clickhouse_data}
+  agentguard_clickhouse_data:
+    name: ${CLICKHOUSE_DATA_VOLUME_NAME:-agentguard_clickhouse_data}
     driver: local
-  langfuse_clickhouse_logs:
-    name: ${CLICKHOUSE_LOGS_VOLUME_NAME:-langfuse_clickhouse_logs}
+  agentguard_clickhouse_logs:
+    name: ${CLICKHOUSE_LOGS_VOLUME_NAME:-agentguard_clickhouse_logs}
     driver: local
-  langfuse_minio_data:
-    name: ${MINIO_VOLUME_NAME:-langfuse_minio_data}
+  agentguard_minio_data:
+    name: ${MINIO_VOLUME_NAME:-agentguard_minio_data}
     driver: local
 
 networks:
   default:
-    name: ${DOCKER_NETWORK_NAME:-langfuse-network}
+    name: ${DOCKER_NETWORK_NAME:-agentguard-network}
     driver: bridge

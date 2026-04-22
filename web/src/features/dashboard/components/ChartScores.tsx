@@ -113,10 +113,11 @@ export function ChartScores(props: {
         <NoDataOrLoading
           isLoading={props.isLoading || scores.isPending}
           description="Scores evaluate LLM quality and can be created manually or using the SDK."
-          href="https://langfuse.com/docs/evaluation/overview"
+          href="https://agentguard.dev/docs/evaluation/overview"
           className="h-full"
         />
       )}
     </DashboardCard>
   );
 }
+

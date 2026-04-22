@@ -38,6 +38,8 @@ const EnvSchema = z.object({
   // Redis Cluster Configuration
   REDIS_CLUSTER_ENABLED: z.enum(["true", "false"]).default("false"),
   REDIS_CLUSTER_NODES: z.string().optional(),
+  REDIS_CLUSTER_NAT_MAP: z.string().optional(),
+  REDIS_CLUSTER_FORCE_ENDPOINT: z.enum(["true", "false"]).default("false"),
   REDIS_CLUSTER_SLOTS_REFRESH_TIMEOUT: z.coerce
     .number()
     .int()
@@ -66,6 +68,7 @@ const EnvSchema = z.object({
   CLICKHOUSE_DB: z.string().default("default"),
   CLICKHOUSE_USER: z.string(),
   CLICKHOUSE_PASSWORD: z.string(),
+  CLICKHOUSE_REQUEST_TIMEOUT_MS: z.coerce.number().int().positive().optional(),
   CLICKHOUSE_KEEP_ALIVE_IDLE_SOCKET_TTL: z.coerce.number().int().default(9000),
   CLICKHOUSE_MAX_OPEN_CONNECTIONS: z.coerce.number().int().default(25),
   // Optional to allow for server-setting fallbacks

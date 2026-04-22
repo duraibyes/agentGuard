@@ -1,0 +1,56 @@
+
+> langfuse@3.167.4 dev:web C:\Users\SYS-02\Desktop\updateagent\AgentGuard
+> turbo run dev --filter=web
+
+
+   • Packages in scope: web
+   • Running dev in 1 packages
+   • Remote caching disabled
+
+@langfuse/shared:db:generate: cache hit, replaying logs 7ce2003268de8d1b
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: > @langfuse/shared@1.0.0 db:generate C:\Users\SYS-02\Desktop\updateagent\AgentGuard\packages\shared
+@langfuse/shared:db:generate: > dotenv -e ../../.env -- npx prisma generate
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: npm warn Unknown env config "minimum-release-age". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+@langfuse/shared:db:generate: npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+@langfuse/shared:db:generate: npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+@langfuse/shared:db:generate: npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+@langfuse/shared:db:generate: warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7. Please migrate to a Prisma config file (e.g., `prisma.config.ts`).
+@langfuse/shared:db:generate: For more information, see: https://pris.ly/prisma-config
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: Prisma schema loaded from prisma\schema.prisma
+@langfuse/shared:db:generate: warn Preview feature "metrics" is deprecated. It will be removed in a future version of Prisma.
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: ✔ Generated Prisma Client (v6.19.3) to .\..\..\node_modules\.pnpm\@prisma+client@6.19.3_prism_f3b4a18754b49c77343e65ef48c7e326\node_modules\@prisma\client in 462ms
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@langfuse/shared:db:generate: 
+@langfuse/shared:db:generate: Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+@langfuse/shared:db:generate: 
+web:dev: cache bypass, force executing af4c0ae4facfe501
+web:dev: 
+web:dev: > web@3.167.4 dev C:\Users\SYS-02\Desktop\updateagent\AgentGuard\web
+web:dev: > dotenv -e ../.env -- next dev
+web:dev: 
+web:dev: Error: spawn EPERM
+web:dev:     at ChildProcess.spawn (node:internal/child_process:421:11)
+web:dev:     at spawn (node:child_process:796:9)
+web:dev:     at fork (node:child_process:174:10)
+web:dev:     at C:\Users\SYS-02\Desktop\updateagent\AgentGuard\node_modules\.pnpm\next@16.2.3_@babel+core@7.2_8a636b15d38e0eb473c4b7f2959e5c3d\node_modules\next\dist\cli\next-dev.js:253:45
+web:dev:     at new Promise (<anonymous>)
+web:dev:     at startServer (C:\Users\SYS-02\Desktop\updateagent\AgentGuard\node_modules\.pnpm\next@16.2.3_@babel+core@7.2_8a636b15d38e0eb473c4b7f2959e5c3d\node_modules\next\dist\cli\next-dev.js:221:16)
+web:dev:     at runDevServer (C:\Users\SYS-02\Desktop\updateagent\AgentGuard\node_modules\.pnpm\next@16.2.3_@babel+core@7.2_8a636b15d38e0eb473c4b7f2959e5c3d\node_modules\next\dist\cli\next-dev.js:355:23)
+web:dev:     at Module.nextDev (C:\Users\SYS-02\Desktop\updateagent\AgentGuard\node_modules\.pnpm\next@16.2.3_@babel+core@7.2_8a636b15d38e0eb473c4b7f2959e5c3d\node_modules\next\dist\cli\next-dev.js:363:11) {
+web:dev:   errno: -4048,
+web:dev:   code: 'EPERM',
+web:dev:   syscall: 'spawn'
+web:dev: }
+web:dev:  ELIFECYCLE  Command failed with exit code 1.
+
+ Tasks:    1 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    1.379s 
+Failed:    web#dev
+
+ ELIFECYCLE  Command failed with exit code 1.

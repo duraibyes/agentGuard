@@ -17,7 +17,7 @@ export function ScoreConfigSettings({ projectId }: { projectId: string }) {
       <p className="mb-2 text-sm">
         Score configs define which scores are available for{" "}
         <a
-          href="https://langfuse.com/docs/evaluation/evaluation-methods/annotation"
+          href="https://agentguard.dev/docs/evaluation/evaluation-methods/annotation"
           className="underline"
           target="_blank"
           rel="noopener noreferrer"
@@ -30,3 +30,4 @@ export function ScoreConfigSettings({ projectId }: { projectId: string }) {
     </div>
   );
 }
+

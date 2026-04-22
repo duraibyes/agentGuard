@@ -221,7 +221,7 @@ export const TracesAndObservationsTimeSeriesChart = ({
                       (!isV2 && traces.isPending)
                     }
                     description="Traces contain details about LLM applications and can be created using the SDK."
-                    href="https://langfuse.com/docs/observability/overview"
+                    href="https://agentguard.dev/docs/observability/overview"
                   />
                 )}
               </>
@@ -232,3 +232,4 @@ export const TracesAndObservationsTimeSeriesChart = ({
     </DashboardCard>
   );
 };
+

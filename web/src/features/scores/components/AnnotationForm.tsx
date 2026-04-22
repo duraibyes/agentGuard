@@ -184,7 +184,7 @@ function AnnotateHeader({
       title="Annotate"
       help={{
         description,
-        href: "https://langfuse.com/docs/evaluation/evaluation-methods/annotation",
+        href: "https://agentguard.dev/docs/evaluation/evaluation-methods/annotation",
         className: "leading-relaxed",
       }}
       actionButtons={[
@@ -1007,3 +1007,4 @@ export function AnnotationForm<Target extends ScoreTarget>({
     />
   );
 }
+

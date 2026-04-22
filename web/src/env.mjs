@@ -53,7 +53,7 @@ export const env = createEnv({
     SALT: z.string({
       error: (issue) =>
         issue.input === undefined
-          ? "A strong Salt is required to encrypt API keys securely. See: https://langfuse.com/self-hosting#deploy-the-container"
+          ? "A strong SALT is required to encrypt API keys securely for AgentGuard."
           : "Invalid type",
     }),
     // Add newly signed up users to default org(s) and/or project(s) with role
@@ -156,8 +156,8 @@ export const env = createEnv({
     AUTH_AUTH0_ALLOW_ACCOUNT_LINKING: z.enum(["true", "false"]).optional(),
     AUTH_AUTH0_CLIENT_AUTH_METHOD: zAuthMethod,
     AUTH_AUTH0_CHECKS: zAuthChecks,
-    // Langfuse Cloud only: "Sign in with ClickHouse Cloud" (Auth0 under the hood).
-    // NOT intended for self-hosted Langfuse — use AUTH_AUTH0_* instead.
+    // AgentGuard Cloud only: "Sign in with ClickHouse Cloud" (Auth0 under the hood).
+    // NOT intended for self-hosted AgentGuard - use AUTH_AUTH0_* instead.
     AUTH_CLICKHOUSE_CLOUD_CLIENT_ID: z.string().optional(),
     AUTH_CLICKHOUSE_CLOUD_CLIENT_SECRET: z.string().optional(),
     AUTH_CLICKHOUSE_CLOUD_ISSUER: z.string().url().optional(),
@@ -290,7 +290,7 @@ export const env = createEnv({
       )
       .optional(),
 
-    // langfuse caching
+    // AgentGuard caching
     LANGFUSE_CACHE_API_KEY_ENABLED: z.enum(["true", "false"]).default("true"),
     LANGFUSE_CACHE_API_KEY_TTL_SECONDS: z.coerce.number().default(300),
 
@@ -365,13 +365,13 @@ export const env = createEnv({
     SLACK_CLIENT_SECRET: z.string().optional(),
     SLACK_STATE_SECRET: z.string().optional(),
 
-    // AWS Bedrock for langfuse native AI feature such as natural language filters
+    // AWS Bedrock for AgentGuard native AI features such as natural language filters
     LANGFUSE_AWS_BEDROCK_MODEL: z.string().optional(),
 
-    // Tracing for Langfuse AI Features
+    // Tracing for AgentGuard AI features
     LANGFUSE_AI_FEATURES_HOST: z.string().optional(),
 
-    // Natural Langfuse Filters
+    // Natural AgentGuard filters
     LANGFUSE_AI_FEATURES_PUBLIC_KEY: z.string().optional(),
     LANGFUSE_AI_FEATURES_SECRET_KEY: z.string().optional(),
     LANGFUSE_AI_FEATURES_PROJECT_ID: z.string().optional(),
@@ -723,7 +723,7 @@ export const env = createEnv({
     LANGFUSE_EE_LICENSE_KEY: process.env.LANGFUSE_EE_LICENSE_KEY,
     ADMIN_API_KEY: process.env.ADMIN_API_KEY,
     ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
-    // langfuse caching
+    // AgentGuard caching
     LANGFUSE_CACHE_API_KEY_ENABLED: process.env.LANGFUSE_CACHE_API_KEY_ENABLED,
     LANGFUSE_CACHE_API_KEY_TTL_SECONDS:
       process.env.LANGFUSE_CACHE_API_KEY_TTL_SECONDS,
@@ -756,10 +756,10 @@ export const env = createEnv({
     SLACK_CLIENT_SECRET: process.env.SLACK_CLIENT_SECRET,
     SLACK_STATE_SECRET: process.env.SLACK_STATE_SECRET,
 
-    // AWS Bedrock for langfuse native AI feature such as natural language filters
+    // AWS Bedrock for AgentGuard native AI features such as natural language filters
     LANGFUSE_AWS_BEDROCK_MODEL: process.env.LANGFUSE_AWS_BEDROCK_MODEL,
 
-    // Langfuse Tracing AI Features
+    // AgentGuard tracing AI features
     LANGFUSE_AI_FEATURES_HOST: process.env.LANGFUSE_AI_FEATURES_HOST,
 
     // Api Performance Flags
@@ -799,3 +799,4 @@ export const env = createEnv({
   skipValidation: process.env.DOCKER_BUILD === "1",
   emptyStringAsUndefined: true, // https://env.t3.gg/docs/customization#treat-empty-strings-as-undefined
 });
+

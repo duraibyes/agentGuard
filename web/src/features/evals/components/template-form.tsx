@@ -547,7 +547,7 @@ export const InnerEvalTemplateForm = (props: {
                           used by all templates that don&apos;t specify their
                           own model.{" "}
                           <a
-                            href="https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge#how-llm-as-a-judge-works"
+                            href="https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge#how-llm-as-a-judge-works"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline"
@@ -885,3 +885,4 @@ export const InnerEvalTemplateForm = (props: {
     </Form>
   );
 };
+

@@ -130,7 +130,7 @@ export const VersionLabel = ({ className }: { className?: string }) => {
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link
-                href="https://langfuse.com/docs/deployment/self-host#update"
+                href="https://agentguard.dev/docs/deployment/self-host#update"
                 target="_blank"
               >
                 <HardDriveDownload size={16} className="mr-2" />
@@ -143,3 +143,4 @@ export const VersionLabel = ({ className }: { className?: string }) => {
     </DropdownMenu>
   );
 };
+

@@ -98,7 +98,7 @@ export default function AIFeatureSwitch() {
               will not be used for training models. Applicable HIPAA, SOC2,
               GDPR, and ISO 27001 compliance remains intact.{" "}
               <a
-                href="https://langfuse.com/security/ai-features"
+                href="https://agentguard.dev/security/ai-features"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary inline-flex items-center gap-1 hover:underline"
@@ -147,7 +147,7 @@ export default function AIFeatureSwitch() {
               <br />
               <br />{" "}
               <a
-                href="https://langfuse.com/security/ai-features"
+                href="https://agentguard.dev/security/ai-features"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary inline-flex items-center gap-1 hover:underline"
@@ -184,3 +184,4 @@ export default function AIFeatureSwitch() {
     </div>
   );
 }
+

@@ -775,7 +775,7 @@ export default function TracesTable({
           <>
             Group traces with tags. Read more about implementing tags{" "}
             <a
-              href="https://langfuse.com/docs/observability/features/tags"
+              href="https://agentguard.dev/docs/observability/features/tags"
               target="_blank"
               rel="noopener noreferrer"
               className="decoration-primary/30 hover:decoration-primary underline"
@@ -786,7 +786,7 @@ export default function TracesTable({
             .
           </>
         ),
-        href: "https://langfuse.com/docs/observability/features/tags",
+        href: "https://agentguard.dev/docs/observability/features/tags",
       },
       cell: ({ row }) => {
         const traceTags: string[] | undefined = row.getValue("tags");
@@ -815,7 +815,7 @@ export default function TracesTable({
             Add metadata to traces to track additional information. Read more
             about adding metadata{" "}
             <a
-              href="https://langfuse.com/docs/observability/features/metadata"
+              href="https://agentguard.dev/docs/observability/features/metadata"
               target="_blank"
               rel="noopener noreferrer"
               className="decoration-primary/30 hover:decoration-primary underline"
@@ -826,7 +826,7 @@ export default function TracesTable({
             .
           </>
         ),
-        href: "https://langfuse.com/docs/observability/features/metadata",
+        href: "https://agentguard.dev/docs/observability/features/metadata",
       },
       cell: ({ row }) => {
         const traceId: TracesTableRow["id"] = row.getValue("id");
@@ -873,7 +873,7 @@ export default function TracesTable({
             Group traces into sessions to track longer conversations/workflows.
             Read more about sessions{" "}
             <a
-              href="https://langfuse.com/docs/observability/features/sessions"
+              href="https://agentguard.dev/docs/observability/features/sessions"
               target="_blank"
               rel="noopener noreferrer"
               className="decoration-primary/30 hover:decoration-primary underline"
@@ -884,7 +884,7 @@ export default function TracesTable({
             .
           </>
         ),
-        href: "https://langfuse.com/docs/observability/features/sessions",
+        href: "https://agentguard.dev/docs/observability/features/sessions",
       },
       cell: ({ row }) => {
         const value: TracesTableRow["sessionId"] = row.getValue("sessionId");
@@ -907,7 +907,7 @@ export default function TracesTable({
             Add <code>userId</code> to traces to track users. Read more about
             user tracking{" "}
             <a
-              href="https://langfuse.com/docs/observability/features/users"
+              href="https://agentguard.dev/docs/observability/features/users"
               target="_blank"
               rel="noopener noreferrer"
               className="decoration-primary/30 hover:decoration-primary underline"
@@ -918,7 +918,7 @@ export default function TracesTable({
             .
           </>
         ),
-        href: "https://langfuse.com/docs/observability/features/users",
+        href: "https://agentguard.dev/docs/observability/features/users",
       },
       cell: ({ row }) => {
         const value: TracesTableRow["userId"] = row.getValue("userId");
@@ -983,7 +983,7 @@ export default function TracesTable({
           <>
             Track changes via the version tag. Read more about versions{" "}
             <a
-              href="https://langfuse.com/docs/observability/features/releases-and-versioning"
+              href="https://agentguard.dev/docs/observability/features/releases-and-versioning"
               target="_blank"
               rel="noopener noreferrer"
               className="decoration-primary/30 hover:decoration-primary underline"
@@ -994,7 +994,7 @@ export default function TracesTable({
             .
           </>
         ),
-        href: "https://langfuse.com/docs/observability/features/releases-and-versioning",
+        href: "https://agentguard.dev/docs/observability/features/releases-and-versioning",
       },
       defaultHidden: true,
       enableHiding: true,
@@ -1011,7 +1011,7 @@ export default function TracesTable({
             Track changes to your application via the release tag. Read more
             about the release tag{" "}
             <a
-              href="https://langfuse.com/docs/observability/features/releases-and-versioning"
+              href="https://agentguard.dev/docs/observability/features/releases-and-versioning"
               target="_blank"
               rel="noopener noreferrer"
               className="decoration-primary/30 hover:decoration-primary underline"
@@ -1022,7 +1022,7 @@ export default function TracesTable({
             .
           </>
         ),
-        href: "https://langfuse.com/docs/observability/features/releases-and-versioning",
+        href: "https://agentguard.dev/docs/observability/features/releases-and-versioning",
       },
       defaultHidden: true,
       enableHiding: true,
@@ -1474,3 +1474,4 @@ const TracesDynamicCell = ({
     />
   );
 };
+

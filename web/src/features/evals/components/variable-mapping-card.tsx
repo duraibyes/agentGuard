@@ -315,7 +315,7 @@ export const VariableMappingCard = ({
                                 "Variable in the template to be replaced with the mapped data."
                               }
                               href={
-                                "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                "https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                               }
                             />
                           </div>
@@ -331,7 +331,7 @@ export const VariableMappingCard = ({
                                     "Langfuse object to retrieve the data from."
                                   }
                                   href={
-                                    "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                    "https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                                   }
                                 />
                                 <FormItem className="w-2/3">
@@ -396,7 +396,7 @@ export const VariableMappingCard = ({
                                         "Name of the Langfuse object to retrieve the data from."
                                       }
                                       href={
-                                        "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                        "https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                                       }
                                     />
                                     <FormItem className="w-2/3">
@@ -496,7 +496,7 @@ export const VariableMappingCard = ({
                                     "Field on the Langfuse object to insert into the template."
                                   }
                                   href={
-                                    "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                    "https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                                   }
                                 />
                                 <FormItem className="w-2/3">
@@ -564,7 +564,7 @@ export const VariableMappingCard = ({
                                       "Optional selection: Use JsonPath syntax to select from a JSON object stored on a trace. If not selected, we will pass the entire object into the prompt."
                                     }
                                     href={
-                                      "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                      "https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                                     }
                                   />
                                   <FormItem className="w-2/3">
@@ -601,7 +601,7 @@ export const VariableMappingCard = ({
                                 "Variable in the template to be replaced with the mapped data."
                               }
                               href={
-                                "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                "https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                               }
                             />
                           </div>
@@ -610,7 +610,7 @@ export const VariableMappingCard = ({
                               <VariableMappingDescription
                                 title="Object"
                                 description="Type of object to retrieve the data from."
-                                href="https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                href="https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                               />
                               <div className="w-2/3">
                                 <Input
@@ -648,7 +648,7 @@ export const VariableMappingCard = ({
                                       "Observation field to insert into the template."
                                     }
                                     href={
-                                      "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                      "https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                                     }
                                   />
                                   <FormItem className="w-2/3">
@@ -699,7 +699,7 @@ export const VariableMappingCard = ({
                                       "Optional selection: Use JsonPath syntax to select from a JSON object. If not selected, we will pass the entire object into the prompt."
                                     }
                                     href={
-                                      "https://langfuse.com/docs/evaluation/evaluation-methods/llm-as-a-judge"
+                                      "https://agentguard.dev/docs/evaluation/evaluation-methods/llm-as-a-judge"
                                     }
                                   />
                                   <FormItem className="w-2/3">
@@ -729,3 +729,4 @@ export const VariableMappingCard = ({
     </Card>
   );
 };
+

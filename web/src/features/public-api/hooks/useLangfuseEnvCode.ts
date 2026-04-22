@@ -9,12 +9,12 @@ export function useLangfuseEnvCode(keys?: {
   const baseUrl = `${uiCustomization?.hostname ?? window.origin}${env.NEXT_PUBLIC_BASE_PATH ?? ""}`;
 
   if (keys) {
-    return `LANGFUSE_SECRET_KEY="${keys.secretKey}"
-LANGFUSE_PUBLIC_KEY="${keys.publicKey}"
-LANGFUSE_BASE_URL="${baseUrl}"`;
+    return `AGENTGUARD_SECRET_KEY="${keys.secretKey}"
+AGENTGUARD_PUBLIC_KEY="${keys.publicKey}"
+AGENTGUARD_BASE_URL="${baseUrl}"`;
   }
 
-  return `LANGFUSE_SECRET_KEY="sk-lf-..."
-LANGFUSE_PUBLIC_KEY="pk-lf-..."
-LANGFUSE_BASE_URL="${baseUrl}"`;
+  return `AGENTGUARD_SECRET_KEY="sk-lf-..."
+AGENTGUARD_PUBLIC_KEY="pk-lf-..."
+AGENTGUARD_BASE_URL="${baseUrl}"`;
 }

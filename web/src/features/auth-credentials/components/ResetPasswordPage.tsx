@@ -101,7 +101,7 @@ export function ResetPasswordPage({
         message="Password reset is not configured on this instance"
         additionalButton={{
           label: "Setup instructions",
-          href: "https://langfuse.com/self-hosting/security/authentication-and-sso#auth-email-password",
+          href: "/",
         }}
       />
     );
@@ -109,7 +109,7 @@ export function ResetPasswordPage({
   return (
     <>
       <Head>
-        <title>Reset Password | Langfuse</title>
+        <title>Reset Password | AgentGuard</title>
       </Head>
       <div className="flex flex-1 flex-col py-6 sm:min-h-full sm:justify-center sm:px-6 sm:py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">

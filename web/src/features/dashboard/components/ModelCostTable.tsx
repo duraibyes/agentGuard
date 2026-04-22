@@ -125,10 +125,11 @@ export const ModelCostTable = ({
         >
           <DocPopup
             description="Calculated multiplying the number of tokens with cost per token for each model."
-            href="https://langfuse.com/docs/model-usage-and-cost"
+            href="https://agentguard.dev/docs/model-usage-and-cost"
           />
         </TotalMetric>
       </DashboardTable>
     </DashboardCard>
   );
 };
+

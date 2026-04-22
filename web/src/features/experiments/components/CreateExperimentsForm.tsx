@@ -102,7 +102,7 @@ export const CreateExperimentsForm = ({
             Experiments allow you to test iterations of your application or
             prompt on a dataset. Learn more about experiments{" "}
             <Link
-              href="https://langfuse.com/docs/evaluation/dataset-runs/datasets"
+              href="https://agentguard.dev/docs/evaluation/dataset-runs/datasets"
               target="_blank"
               className="underline"
             >
@@ -145,7 +145,7 @@ export const CreateExperimentsForm = ({
                     capture("dataset_run:view_prompt_experiment_docs")
                   }
                 >
-                  <Link href="https://langfuse.com/docs/evaluation/dataset-runs/native-run">
+                  <Link href="https://agentguard.dev/docs/evaluation/dataset-runs/native-run">
                     View Docs
                   </Link>
                 </Button>
@@ -198,7 +198,7 @@ export const CreateExperimentsForm = ({
                   }
                 >
                   <Link
-                    href="https://langfuse.com/docs/evaluation/dataset-runs/remote-run"
+                    href="https://agentguard.dev/docs/evaluation/dataset-runs/remote-run"
                     target="_blank"
                   >
                     View Docs
@@ -260,3 +260,4 @@ export const CreateExperimentsForm = ({
     />
   );
 };
+

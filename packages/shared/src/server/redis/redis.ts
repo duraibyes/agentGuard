@@ -55,6 +55,64 @@ const parseRedisNodes = (
 const parseClusterNodes = parseRedisNodes;
 const parseSentinelNodes = parseRedisNodes;
 
+type NatMapTarget = { host: string; port: number };
+type NatMapObject = Record<string, NatMapTarget>;
+
+const parseHostPort = (value: string, label: string): NatMapTarget => {
+  const [host, port] = value.trim().split(":");
+  if (!host || !port) {
+    throw new Error(
+      `Invalid ${label} format: ${value}. Expected format: host:port`,
+    );
+  }
+
+  return { host, port: parseInt(port, 10) };
+};
+
+/**
+ * Parse Redis cluster NAT map from environment variable
+ * Format: "sourceHost:sourcePort=destHost:destPort,source2:port2=dest2:port2"
+ */
+const parseRedisClusterNatMap = (natMapString: string): NatMapObject => {
+  return natMapString
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .reduce<NatMapObject>((acc, entry) => {
+      const [source, destination] = entry.split("=");
+      if (!source || !destination) {
+        throw new Error(
+          `Invalid REDIS_CLUSTER_NAT_MAP entry: ${entry}. Expected source=destination`,
+        );
+      }
+      acc[source.trim()] = parseHostPort(destination, "nat map destination");
+      return acc;
+    }, {});
+};
+
+const createRedisClusterNatMap = (): ClusterOptions["natMap"] | undefined => {
+  const explicitNatMap = env.REDIS_CLUSTER_NAT_MAP
+    ? parseRedisClusterNatMap(env.REDIS_CLUSTER_NAT_MAP)
+    : undefined;
+
+  if (env.REDIS_CLUSTER_FORCE_ENDPOINT === "true") {
+    if (!env.REDIS_HOST || !env.REDIS_PORT) {
+      throw new Error(
+        "REDIS_HOST and REDIS_PORT are required when REDIS_CLUSTER_FORCE_ENDPOINT is true",
+      );
+    }
+
+    const forcedTarget: NatMapTarget = {
+      host: String(env.REDIS_HOST),
+      port: Number(env.REDIS_PORT),
+    };
+
+    return (nodeKey: string) => explicitNatMap?.[nodeKey] ?? forcedTarget;
+  }
+
+  return explicitNatMap;
+};
+
 /**
  * Build TLS options for Redis connections from environment variables
  * Returns an object with tls configuration if TLS is enabled, otherwise empty object
@@ -114,6 +172,7 @@ const createRedisClusterInstance = (
 
   const nodes = parseClusterNodes(env.REDIS_CLUSTER_NODES);
   const tlsOptions = buildTlsOptions();
+  const natMap = createRedisClusterNatMap();
 
   const clusterOptions: ClusterOptions = {
     // Return incoming addresses as-is - required for AWS ElastiCache Certificate resolution
@@ -121,6 +180,7 @@ const createRedisClusterInstance = (
       callback(null, address);
     },
     slotsRefreshTimeout: env.REDIS_CLUSTER_SLOTS_REFRESH_TIMEOUT,
+    ...(natMap ? { natMap } : {}),
     redisOptions: {
       username: env.REDIS_USERNAME || undefined,
       password: env.REDIS_AUTH || undefined,

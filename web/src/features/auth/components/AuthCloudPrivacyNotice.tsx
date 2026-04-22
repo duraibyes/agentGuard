@@ -5,7 +5,7 @@ export const CloudPrivacyNotice = ({ action }: { action: string }) =>
     <div className="text-muted-foreground mx-auto mt-10 max-w-lg text-center text-xs">
       By {action} you are agreeing to our{" "}
       <a
-        href="https://langfuse.com/terms"
+        href="https://agentguard.dev/terms"
         target="_blank"
         rel="noopener noreferrer"
         className="italic"
@@ -14,7 +14,7 @@ export const CloudPrivacyNotice = ({ action }: { action: string }) =>
       </a>
       ,{" "}
       <a
-        href="https://langfuse.com/privacy"
+        href="https://agentguard.dev/privacy"
         rel="noopener noreferrer"
         className="italic"
       >
@@ -22,7 +22,7 @@ export const CloudPrivacyNotice = ({ action }: { action: string }) =>
       </a>
       , and{" "}
       <a
-        href="https://langfuse.com/cookie-policy"
+        href="https://agentguard.dev/cookie-policy"
         rel="noopener noreferrer"
         className="italic"
       >
@@ -31,3 +31,4 @@ export const CloudPrivacyNotice = ({ action }: { action: string }) =>
       . You also confirm that the entered data is accurate.
     </div>
   ) : null;
+

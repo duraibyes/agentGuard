@@ -15,6 +15,7 @@ import {
   redis,
   ProjectDeleteQueue,
   getEnvironmentsForProject,
+  ClickHouseResourceError,
 } from "@langfuse/shared/src/server";
 import { randomUUID } from "crypto";
 import { StringNoHTMLNonEmpty } from "@langfuse/shared";
@@ -295,5 +296,15 @@ export const projectsRouter = createTRPCRouter({
     .input(
       z.object({ projectId: z.string(), fromTimestamp: z.date().optional() }),
     )
-    .query(async ({ input }) => getEnvironmentsForProject(input)),
+    .query(async ({ input }) => {
+      try {
+        return await getEnvironmentsForProject(input);
+      } catch (error) {
+        // Prevent noisy UI toasts when this metadata query exceeds ClickHouse resource limits.
+        if (error instanceof ClickHouseResourceError) {
+          return [{ environment: "default" }];
+        }
+        throw error;
+      }
+    }),
 });

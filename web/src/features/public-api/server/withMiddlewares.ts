@@ -33,7 +33,7 @@ const defaultHandler = () => {
 
 const CH_ERROR_ADVICE_FULL = [
   ClickHouseResourceError.ERROR_ADVICE_MESSAGE,
-  "See https://langfuse.com/docs/api-and-data-platform/features/public-api for more details.",
+  "See https://agentguard.dev/docs/api-and-data-platform/features/public-api for more details.",
 ].join("\n");
 
 export function withMiddlewares(handlers: Handlers) {
@@ -129,3 +129,4 @@ export function withMiddlewares(handlers: Handlers) {
 export function isZodError(error: any): error is ZodError {
   return error instanceof Object && error.constructor.name === "ZodError";
 }
+

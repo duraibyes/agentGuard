@@ -1,7 +1,7 @@
 {
-  "name": "langfuse",
+  "name": "agentguard",
   "version": "3.167.4",
-  "author": "engineering@langfuse.com",
+  "author": "engineering@agentguard.dev",
   "license": "MIT",
   "private": true,
   "engines": {
@@ -10,7 +10,7 @@
   "scripts": {
     "agents:check": "node scripts/agents/sync-agent-shims.mjs --check",
     "agents:sync": "node scripts/agents/sync-agent-shims.mjs",
-    "postinstall": "node -e \"const fs = require('node:fs'); const cp = require('node:child_process'); if (!fs.existsSync('scripts/postinstall.sh')) { console.log('Skipping repo postinstall helper: scripts/postinstall.sh is not present in this install context.'); process.exit(0); } cp.execSync('bash scripts/postinstall.sh', { stdio: 'inherit' });\"",
+    "postinstall": "node -e \"const fs = require('node:fs'); const cp = require('node:child_process'); if (process.platform === 'win32') { console.log('Skipping agent shim sync on Windows (symlink permissions may be restricted).'); process.exit(0); } if (!fs.existsSync('scripts/agents/sync-agent-shims.mjs')) { console.log('Skipping agent shim sync: scripts/agents/sync-agent-shims.mjs is not present in this install context.'); process.exit(0); } cp.execSync('pnpm run agents:sync', { stdio: 'inherit' }); cp.execSync('pnpm run agents:check', { stdio: 'inherit' });\"",
     "preinstall": "npx only-allow pnpm",
     "infra:dev:up": "docker compose -f ./docker-compose.dev.yml up -d --wait",
     "infra:dev:down": "docker compose -f ./docker-compose.dev.yml down",
@@ -32,6 +32,7 @@
     "dev:worker": "turbo run dev --filter=worker",
     "dev:web": "turbo run dev --filter=web",
     "dev:web-webpack": "turbo run dev --filter=web -- --webpack",
+    "health:backend": "pnpm --filter worker exec node -r dotenv/config ./scripts/check-backend-health.mjs dotenv_config_path=../.env",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\" --experimental-cli",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,css}\" --experimental-cli",

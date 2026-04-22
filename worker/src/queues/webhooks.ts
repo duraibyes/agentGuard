@@ -462,7 +462,7 @@ async function executeGitHubDispatchAction({
       }
     : undefined;
 
-  // Validate and prepare Langfuse payload
+  // Validate and prepare AgentGuard payload
   const validatedPayload = PromptWebhookOutboundSchema.safeParse({
     id: input.executionId,
     timestamp: new Date(),
@@ -597,7 +597,7 @@ async function executeSlackAction({
       client,
       channelId: slackConfig.channelId,
       blocks,
-      text: "Langfuse Notification",
+      text: "AgentGuard Notification",
     });
 
     // Update execution status to completed

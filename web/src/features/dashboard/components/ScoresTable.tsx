@@ -243,7 +243,7 @@ export const ScoresTable = ({
         noDataProps={{
           description:
             "Scores evaluate LLM quality and can be created manually or using the SDK.",
-          href: "https://langfuse.com/docs/evaluation/overview",
+          href: "https://agentguard.dev/docs/evaluation/overview",
         }}
       >
         <TotalMetric
@@ -254,3 +254,4 @@ export const ScoresTable = ({
     </DashboardCard>
   );
 };
+
