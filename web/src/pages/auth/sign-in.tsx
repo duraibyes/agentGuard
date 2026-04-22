@@ -29,9 +29,14 @@ export default function SignInPage() {
 
     void (async () => {
       const callbackUrl = targetPath;
+      const hostname =
+        typeof window !== "undefined" ? window.location.hostname : "";
+      const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+      const shouldUseLocalBypass =
+        process.env.NODE_ENV === "development" && isLocalhost;
 
       // Local bypass path: no sign-in UI, auto-bootstrap and sign in.
-      if (process.env.NEXT_PUBLIC_LANGFUSE_CLOUD_REGION === "DEV") {
+      if (shouldUseLocalBypass) {
         try {
           setMessage("Preparing local account...");
           const bootstrap = await fetch("/api/auth/local-bootstrap", {
