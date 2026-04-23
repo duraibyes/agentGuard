@@ -22,6 +22,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showManualForm, setShowManualForm] = useState(false);
 
   const targetPath = useMemo(() => {
     const preferred = router.query.targetPath ?? router.query.callbackUrl;
@@ -37,13 +38,8 @@ export default function SignInPage() {
 
     void (async () => {
       const callbackUrl = targetPath;
-      const nextAuthUrl = process.env.NEXTAUTH_URL ?? "";
-      const isLocalNextAuth =
-        nextAuthUrl.includes("localhost") || nextAuthUrl.includes("127.0.0.1");
       const shouldUseLocalBypass =
-        process.env.NODE_ENV === "development" &&
-        isLocalhost &&
-        isLocalNextAuth;
+        process.env.NODE_ENV === "development" && isLocalhost;
 
       // Local bypass path: no sign-in UI, auto-bootstrap and sign in.
       if (shouldUseLocalBypass) {
@@ -55,6 +51,7 @@ export default function SignInPage() {
 
           if (!bootstrap.ok) {
             setMessage("Local bootstrap failed.");
+            setShowManualForm(true);
             return;
           }
 
@@ -72,8 +69,10 @@ export default function SignInPage() {
           }
 
           setMessage("Auto sign-in failed.");
+          setShowManualForm(true);
         } catch {
           setMessage("Auto sign-in failed.");
+          setShowManualForm(true);
         }
       }
     })();
@@ -111,7 +110,7 @@ export default function SignInPage() {
     }
   };
 
-  if (isLocalhost) {
+  if (isLocalhost && !showManualForm) {
     return (
       <main
         style={{

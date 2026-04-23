@@ -69,7 +69,8 @@
     },
     "worker#dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["@langfuse/shared#db:generate"]
     }
   }
 }
