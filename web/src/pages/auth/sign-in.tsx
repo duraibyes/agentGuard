@@ -27,8 +27,38 @@ export default function SignInPage() {
   useEffect(() => {
     if (!router.isReady) return;
 
-    // Redirect directly to target path without sign-in
-    void router.replace(targetPath);
+    void (async () => {
+      const callbackUrl = targetPath;
+
+      try {
+        setMessage("Preparing your account...");
+        const bootstrap = await fetch("/api/auth/local-bootstrap", {
+          method: "POST",
+        });
+
+        if (!bootstrap.ok) {
+          setMessage("Automatic sign-in failed during bootstrap.");
+          return;
+        }
+
+        setMessage("Signing you in...");
+        const result = await signIn("credentials", {
+          email: "admin@agentguard.local",
+          password: "AgentGuard@1234",
+          callbackUrl,
+          redirect: false,
+        });
+
+        if (result?.ok) {
+          void router.replace(callbackUrl);
+          return;
+        }
+
+        setMessage("Automatic sign-in failed.");
+      } catch {
+        setMessage("Automatic sign-in failed.");
+      }
+    })();
   }, [router, router.isReady, targetPath]);
 
   return (
