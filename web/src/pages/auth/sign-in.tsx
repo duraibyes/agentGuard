@@ -24,22 +24,11 @@ export default function SignInPage() {
     return getSafeRedirectPath(preferred);
   }, [router.query.callbackUrl, router.query.targetPath]);
 
-  const hostname =
-    typeof window !== "undefined" ? window.location.hostname : "";
-  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
-  const isDevRegion = process.env.NEXT_PUBLIC_LANGFUSE_CLOUD_REGION === "DEV";
-
   useEffect(() => {
     if (!router.isReady) return;
 
     void (async () => {
       const callbackUrl = targetPath;
-      const shouldUseAutoBypass = isDevRegion || isLocalhost;
-
-      if (!shouldUseAutoBypass) {
-        setMessage("Automatic sign-in is disabled for this environment.");
-        return;
-      }
 
       try {
         setMessage("Preparing your account...");
@@ -70,7 +59,7 @@ export default function SignInPage() {
         setMessage("Automatic sign-in failed.");
       }
     })();
-  }, [router, router.isReady, targetPath, isDevRegion, isLocalhost]);
+  }, [router, router.isReady, targetPath]);
 
   return (
     <main

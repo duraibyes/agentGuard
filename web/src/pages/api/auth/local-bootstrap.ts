@@ -15,11 +15,6 @@ export default async function localBootstrapHandler(
     return;
   }
 
-  if (env.NEXT_PUBLIC_LANGFUSE_CLOUD_REGION !== "DEV") {
-    res.status(403).json({ message: "Local bootstrap is only enabled in DEV." });
-    return;
-  }
-
   if (!env.LANGFUSE_INIT_USER_EMAIL || !env.LANGFUSE_INIT_USER_PASSWORD) {
     res.status(422).json({
       message: "LANGFUSE_INIT_USER_EMAIL and LANGFUSE_INIT_USER_PASSWORD are required.",
