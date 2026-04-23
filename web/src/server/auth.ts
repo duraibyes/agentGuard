@@ -678,6 +678,7 @@ export async function getAuthOptions(): Promise<NextAuthOptions> {
   const providers = [...staticProviders, ...dynamicSsoProviders];
 
   const data: NextAuthOptions = {
+    trustHost: true,
     session: {
       strategy: "jwt",
       maxAge: env.AUTH_SESSION_MAX_AGE * 60, // convert minutes to seconds, default is set in env.mjs
