@@ -5,7 +5,7 @@ export default function SignUpPage() {
   const router = useRouter();
 
   useEffect(() => {
-    void router.replace("/auth/sign-in");
+    void router.replace("/");
   }, [router]);
 
   return null;

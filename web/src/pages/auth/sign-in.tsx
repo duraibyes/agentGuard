@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 
@@ -17,12 +17,7 @@ function getSafeRedirectPath(input: string | string[] | undefined): string {
 
 export default function SignInPage() {
   const router = useRouter();
-  const [message, setMessage] = useState("Redirecting to authentication...");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showManualForm, setShowManualForm] = useState(false);
+  const [message, setMessage] = useState("Redirecting to your workspace...");
 
   const targetPath = useMemo(() => {
     const preferred = router.query.targetPath ?? router.query.callbackUrl;
@@ -32,101 +27,50 @@ export default function SignInPage() {
   const hostname =
     typeof window !== "undefined" ? window.location.hostname : "";
   const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+  const isDevRegion = process.env.NEXT_PUBLIC_LANGFUSE_CLOUD_REGION === "DEV";
 
   useEffect(() => {
     if (!router.isReady) return;
 
     void (async () => {
       const callbackUrl = targetPath;
-      const shouldUseLocalBypass =
-        process.env.NODE_ENV === "development" && isLocalhost;
+      const shouldUseAutoBypass = isDevRegion || isLocalhost;
 
-      // Local bypass path: no sign-in UI, auto-bootstrap and sign in.
-      if (shouldUseLocalBypass) {
-        try {
-          setMessage("Preparing local account...");
-          const bootstrap = await fetch("/api/auth/local-bootstrap", {
-            method: "POST",
-          });
-
-          if (!bootstrap.ok) {
-            setMessage("Local bootstrap failed.");
-            setShowManualForm(true);
-            return;
-          }
-
-          setMessage("Signing you in...");
-          const result = await signIn("credentials", {
-            email: "admin@agentguard.local",
-            password: "AgentGuard@1234",
-            callbackUrl,
-            redirect: false,
-          });
-
-          if (result?.ok) {
-            void router.replace(callbackUrl);
-            return;
-          }
-
-          setMessage("Auto sign-in failed.");
-          setShowManualForm(true);
-        } catch {
-          setMessage("Auto sign-in failed.");
-          setShowManualForm(true);
-        }
-      }
-    })();
-  }, [router, router.isReady, targetPath, isLocalhost]);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!email || !password) {
-      setError("Email and password are required.");
-      return;
-    }
-
-    setError(null);
-    setIsSubmitting(true);
-
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        callbackUrl: targetPath,
-        redirect: false,
-      });
-
-      if (result?.ok) {
-        void router.replace(result.url ?? targetPath);
+      if (!shouldUseAutoBypass) {
+        setMessage("Automatic sign-in is disabled for this environment.");
         return;
       }
 
-      setError("Invalid email or password.");
-    } catch {
-      setError("Sign-in failed. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      try {
+        setMessage("Preparing your account...");
+        const bootstrap = await fetch("/api/auth/local-bootstrap", {
+          method: "POST",
+        });
 
-  if (isLocalhost && !showManualForm) {
-    return (
-      <main
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "hsl(var(--background))",
-          color: "hsl(var(--foreground))",
-          padding: "1rem",
-        }}
-      >
-        {message}
-      </main>
-    );
-  }
+        if (!bootstrap.ok) {
+          setMessage("Automatic sign-in failed during bootstrap.");
+          return;
+        }
+
+        setMessage("Signing you in...");
+        const result = await signIn("credentials", {
+          email: "admin@agentguard.local",
+          password: "AgentGuard@1234",
+          callbackUrl,
+          redirect: false,
+        });
+
+        if (result?.ok) {
+          void router.replace(callbackUrl);
+          return;
+        }
+
+        setMessage("Automatic sign-in failed.");
+      } catch {
+        setMessage("Automatic sign-in failed.");
+      }
+    })();
+  }, [router, router.isReady, targetPath, isDevRegion, isLocalhost]);
 
   return (
     <main
@@ -140,53 +84,7 @@ export default function SignInPage() {
         padding: "1rem",
       }}
     >
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          width: "100%",
-          maxWidth: "360px",
-          display: "grid",
-          gap: "0.75rem",
-        }}
-      >
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{
-            padding: "0.65rem",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-          }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{
-            padding: "0.65rem",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-          }}
-        />
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          style={{
-            padding: "0.65rem",
-            borderRadius: "8px",
-            border: "none",
-            cursor: isSubmitting ? "default" : "pointer",
-          }}
-        >
-          {isSubmitting ? "Signing in..." : "Sign in"}
-        </button>
-        {error ? <div style={{ color: "#b91c1c" }}>{error}</div> : null}
-      </form>
+      {message}
     </main>
   );
 }
