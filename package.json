@@ -39,7 +39,7 @@
     "playwright:install": "pnpm --filter web exec playwright install chromium",
     "test": "turbo run test",
     "release": "dotenv -e ../.env -- release-it",
-    "release:cloud": "bash ./scripts/release-cloud.sh",
+    "release:cloud": "bash ./scripts/release-cloud.sh"
   },
   "devDependencies": {
     "@release-it/bumper": "^7.0.5",
