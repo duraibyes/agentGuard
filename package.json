@@ -4,14 +4,9 @@
   "author": "engineering@agentguard.dev",
   "license": "MIT",
   "private": true,
-  "engines": {
-    "node": "24"
-  },
   "scripts": {
     "agents:check": "node scripts/agents/sync-agent-shims.mjs --check",
     "agents:sync": "node scripts/agents/sync-agent-shims.mjs",
-    "postinstall": "node -e \"const fs = require('node:fs'); const cp = require('node:child_process'); if (process.platform === 'win32') { console.log('Skipping agent shim sync on Windows (symlink permissions may be restricted).'); process.exit(0); } if (!fs.existsSync('scripts/agents/sync-agent-shims.mjs')) { console.log('Skipping agent shim sync: scripts/agents/sync-agent-shims.mjs is not present in this install context.'); process.exit(0); } cp.execSync('pnpm run agents:sync', { stdio: 'inherit' }); cp.execSync('pnpm run agents:check', { stdio: 'inherit' });\"",
-    "preinstall": "npx only-allow pnpm",
     "infra:dev:up": "docker compose -f ./docker-compose.dev.yml up -d --wait",
     "infra:dev:down": "docker compose -f ./docker-compose.dev.yml down",
     "infra:dev:prune": "docker compose -f ./docker-compose.dev.yml down -v",
